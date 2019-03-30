@@ -4,6 +4,7 @@ import cv2
 import numpy
 import datetime
 import time
+import os
 
 
 while True:
@@ -34,13 +35,23 @@ while True:
         break
     else:
         print("No face found")
-    
-cv2.putText(image, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"), (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)    
+
+#date_now = datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p")
+#cv2.putText(image, date_now, (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)    
+date_now = datetime.datetime.now().strftime("%A, %d %B %Y, %I:%M:%S%p")
+today_is = 'Today is ' + date_now
     
 #Draw a rectangle around every found face
 for (x,y,w,h) in faces:
     cv2.rectangle(image,(x,y),(x+w,y+h),(255,255,0),2)
     
-    
 #Save the result image
 cv2.imwrite('result.jpg',image)
+
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/receipt/1-logo.png")
+os.system("echo " + today_is + " | lp")
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/receipt/2-thank-you.png")
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/receipt/3-price.png")
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/receipt/4-revenue.png")
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/result.jpg")
+os.system("lp -o fit-to-page -o orientation-requested=1 /home/pi/Desktop/surv/receipt/5-barcode.png")
